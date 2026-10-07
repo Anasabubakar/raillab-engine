@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "1",
+  "name": "everything-at-once",
+  "title": "Seeded mix of every fault",
+  "description": "Probabilistic latency, transient errors, repeats and reordering over a jittered timeline, plus token expiry. Same scenario and seed reproduce the identical timeline; a different seed gives a different one.",
+  "anchor": {
+    "assetCode": "USDC",
+    "amountIn": "100",
+    "fee": "1",
+    "timeline": [
+      {
+        "atMs": 0,
+        "status": "incomplete"
+      },
+      {
+        "atMs": 12000,
+        "status": "pending_user_transfer_start",
+        "message": "SIMULATED: send the withdrawal payment to the anchor account shown."
+      },
+      {
+        "atMs": 40000,
+        "status": "pending_user_transfer_complete"
+      },
+      {
+        "atMs": 70000,
+        "status": "pending_anchor"
+      },
+      {
+        "atMs": 100000,
+        "status": "pending_stellar"
+      },
+      {
+        "atMs": 130000,
+        "status": "pending_external",
+        "message": "SIMULATED BANK: transfer submitted, not yet confirmed."
+      },
+      {
+        "atMs": 160000,
+        "status": "completed",
+        "message": "SIMULATED BANK: payout confirmed."
+      }
+    ],
+    "jitterMs": 8000
+  },
+  "requestIntervalMs": 5000,
+  "faults": [
+    {
+      "type": "latency",
+      "virtualMs": 3000,
+      "probability": 0.2
+    },
+    {
+      "type": "transient_error",
+      "status": 502,
+      "probability": 0.1
+    },
+    {
+      "type": "duplicate_response",
+      "probability": 0.15
+    },
+    {
+      "type": "stale_snapshot",
+      "serveAsOfMs": 40000,
+      "probability": 0.1
+    },
+    {
+      "type": "token_expiry",
+      "afterMs": 90000
+    }
+  ],
+  "maxPolls": 120
+}
