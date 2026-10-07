@@ -5,18 +5,35 @@
   "license": "MIT",
   "author": "Anas Abubakar",
   "type": "module",
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "packageManager": "pnpm@11.25.0",
-  "bin": { "raillab": "./dist/node/cli.js" },
+  "bin": {
+    "raillab": "./dist/node/cli.js"
+  },
   "main": "./dist/engine/index.js",
   "types": "./dist/engine/index.d.ts",
   "exports": {
-    ".": { "types": "./dist/engine/index.d.ts", "default": "./dist/engine/index.js" },
-    "./node": { "types": "./dist/node/index.d.ts", "default": "./dist/node/index.js" },
+    ".": {
+      "types": "./dist/engine/index.d.ts",
+      "default": "./dist/engine/index.js"
+    },
+    "./node": {
+      "types": "./dist/node/index.d.ts",
+      "default": "./dist/node/index.js"
+    },
     "./schema/scenario.v1.schema.json": "./schema/scenario.v1.schema.json",
-    "./schema/session.v1.schema.json": "./schema/session.v1.schema.json"
+    "./schema/session.v1.schema.json": "./schema/session.v1.schema.json",
+    "./scenarios/*.json": "./scenarios/*.json"
   },
-  "files": ["dist", "schema", "scenarios", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "schema",
+    "scenarios",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json && node scripts/postbuild.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
