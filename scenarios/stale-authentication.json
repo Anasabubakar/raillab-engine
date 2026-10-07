@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "1",
+  "name": "stale-authentication",
+  "title": "Token expires mid-withdrawal",
+  "description": "The bearer token expires 60 virtual seconds after issue. The next poll gets 403 authentication_required. The client must authenticate again and carry on.",
+  "anchor": {
+    "assetCode": "USDC",
+    "amountIn": "100",
+    "fee": "1",
+    "timeline": [
+      {
+        "atMs": 0,
+        "status": "incomplete"
+      },
+      {
+        "atMs": 12000,
+        "status": "pending_user_transfer_start",
+        "message": "SIMULATED: send the withdrawal payment to the anchor account shown."
+      },
+      {
+        "atMs": 40000,
+        "status": "pending_user_transfer_complete"
+      },
+      {
+        "atMs": 70000,
+        "status": "pending_anchor"
+      },
+      {
+        "atMs": 100000,
+        "status": "pending_stellar"
+      },
+      {
+        "atMs": 130000,
+        "status": "pending_external",
+        "message": "SIMULATED BANK: transfer submitted, not yet confirmed."
+      },
+      {
+        "atMs": 160000,
+        "status": "completed",
+        "message": "SIMULATED BANK: payout confirmed."
+      }
+    ],
+    "jitterMs": 0
+  },
+  "requestIntervalMs": 5000,
+  "faults": [
+    {
+      "type": "token_expiry",
+      "afterMs": 60000
+    }
+  ],
+  "maxPolls": 80
+}
