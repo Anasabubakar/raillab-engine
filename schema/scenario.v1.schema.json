@@ -1,0 +1,381 @@
+{
+  "title": "RailLab scenario v1",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^[a-z0-9][a-z0-9-]*$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000
+    },
+    "anchor": {
+      "type": "object",
+      "properties": {
+        "assetCode": {
+          "default": "USDC",
+          "type": "string",
+          "pattern": "^[A-Za-z0-9]{1,12}$"
+        },
+        "amountIn": {
+          "default": "100",
+          "type": "string",
+          "pattern": "^\\d+(\\.\\d{1,7})?$"
+        },
+        "fee": {
+          "default": "1",
+          "type": "string",
+          "pattern": "^\\d+(\\.\\d{1,7})?$"
+        },
+        "timeline": {
+          "minItems": 2,
+          "maxItems": 40,
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "atMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 604800000
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "incomplete",
+                  "pending_user_transfer_start",
+                  "pending_user_transfer_complete",
+                  "pending_external",
+                  "pending_anchor",
+                  "pending_stellar",
+                  "pending_trust",
+                  "pending_user",
+                  "completed",
+                  "refunded",
+                  "expired",
+                  "no_market",
+                  "too_small",
+                  "too_large",
+                  "error"
+                ]
+              },
+              "message": {
+                "type": "string",
+                "maxLength": 200
+              }
+            },
+            "required": [
+              "atMs",
+              "status"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "jitterMs": {
+          "default": 0,
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 604800000
+        }
+      },
+      "required": [
+        "timeline"
+      ],
+      "additionalProperties": false
+    },
+    "requestIntervalMs": {
+      "default": 5000,
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3600000
+    },
+    "faults": {
+      "default": [],
+      "maxItems": 50,
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "transient_error"
+              },
+              "status": {
+                "default": 503,
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "const": 500
+                  },
+                  {
+                    "type": "number",
+                    "const": 502
+                  },
+                  {
+                    "type": "number",
+                    "const": 503
+                  },
+                  {
+                    "type": "number",
+                    "const": 504
+                  }
+                ]
+              },
+              "retryAfterSeconds": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 3600
+              },
+              "onPolls": {
+                "minItems": 1,
+                "maxItems": 200,
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10000
+                }
+              },
+              "fromMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 604800000
+              },
+              "toMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 604800000
+              },
+              "probability": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "duplicate_response"
+              },
+              "onPolls": {
+                "minItems": 1,
+                "maxItems": 200,
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10000
+                }
+              },
+              "fromMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 604800000
+              },
+              "toMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 604800000
+              },
+              "probability": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "stale_snapshot"
+              },
+              "serveAsOfMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 604800000
+              },
+              "onPolls": {
+                "minItems": 1,
+                "maxItems": 200,
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10000
+                }
+              },
+              "fromMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 604800000
+              },
+              "toMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 604800000
+              },
+              "probability": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            },
+            "required": [
+              "type",
+              "serveAsOfMs"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "latency"
+              },
+              "virtualMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 604800000
+              },
+              "realMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 10000
+              },
+              "onPolls": {
+                "minItems": 1,
+                "maxItems": 200,
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10000
+                }
+              },
+              "fromMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 604800000
+              },
+              "toMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 604800000
+              },
+              "probability": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            },
+            "required": [
+              "type",
+              "virtualMs"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "mismatched_reference"
+              },
+              "onPolls": {
+                "minItems": 1,
+                "maxItems": 200,
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 10000
+                }
+              },
+              "fromMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 604800000
+              },
+              "toMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 604800000
+              },
+              "probability": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            },
+            "required": [
+              "type"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "const": "token_expiry"
+              },
+              "afterMs": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 604800000
+              }
+            },
+            "required": [
+              "type",
+              "afterMs"
+            ],
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "maxPolls": {
+      "default": 60,
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 10000
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "name",
+    "title",
+    "description",
+    "anchor"
+  ],
+  "additionalProperties": false
+}
