@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "1",
+  "name": "mismatched-reference",
+  "title": "Responses for the wrong transaction",
+  "description": "Two polls return a record whose id is not the one requested, at moments when the real status changes. A client that applies them is updating the wrong transaction.",
+  "anchor": {
+    "assetCode": "USDC",
+    "amountIn": "100",
+    "fee": "1",
+    "timeline": [
+      {
+        "atMs": 0,
+        "status": "incomplete"
+      },
+      {
+        "atMs": 12000,
+        "status": "pending_user_transfer_start",
+        "message": "SIMULATED: send the withdrawal payment to the anchor account shown."
+      },
+      {
+        "atMs": 40000,
+        "status": "pending_user_transfer_complete"
+      },
+      {
+        "atMs": 70000,
+        "status": "pending_anchor"
+      },
+      {
+        "atMs": 100000,
+        "status": "pending_stellar"
+      },
+      {
+        "atMs": 130000,
+        "status": "pending_external",
+        "message": "SIMULATED BANK: transfer submitted, not yet confirmed."
+      },
+      {
+        "atMs": 160000,
+        "status": "completed",
+        "message": "SIMULATED BANK: payout confirmed."
+      }
+    ],
+    "jitterMs": 0
+  },
+  "requestIntervalMs": 5000,
+  "faults": [
+    {
+      "type": "mismatched_reference",
+      "onPolls": [
+        6,
+        12
+      ]
+    }
+  ],
+  "maxPolls": 80
+}
