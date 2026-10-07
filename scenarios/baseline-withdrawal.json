@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "1",
+  "name": "baseline-withdrawal",
+  "title": "Baseline withdrawal, no faults",
+  "description": "A withdrawal that progresses through the SEP-24 statuses to completed with no failures. A client that announces completion at pending_anchor, pending_stellar or pending_external is wrong; only completed means the payout is done.",
+  "anchor": {
+    "assetCode": "USDC",
+    "amountIn": "100",
+    "fee": "1",
+    "timeline": [
+      {
+        "atMs": 0,
+        "status": "incomplete"
+      },
+      {
+        "atMs": 12000,
+        "status": "pending_user_transfer_start",
+        "message": "SIMULATED: send the withdrawal payment to the anchor account shown."
+      },
+      {
+        "atMs": 40000,
+        "status": "pending_user_transfer_complete"
+      },
+      {
+        "atMs": 70000,
+        "status": "pending_anchor"
+      },
+      {
+        "atMs": 100000,
+        "status": "pending_stellar"
+      },
+      {
+        "atMs": 130000,
+        "status": "pending_external",
+        "message": "SIMULATED BANK: transfer submitted, not yet confirmed."
+      },
+      {
+        "atMs": 160000,
+        "status": "completed",
+        "message": "SIMULATED BANK: payout confirmed."
+      }
+    ],
+    "jitterMs": 0
+  },
+  "requestIntervalMs": 5000,
+  "faults": [],
+  "maxPolls": 80
+}
