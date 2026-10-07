@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "1",
+  "name": "transient-outage",
+  "title": "Status endpoint returns 503 three times",
+  "description": "The status endpoint fails transiently on three consecutive polls. A 5xx says nothing about the transaction; the client must keep polling.",
+  "anchor": {
+    "assetCode": "USDC",
+    "amountIn": "100",
+    "fee": "1",
+    "timeline": [
+      {
+        "atMs": 0,
+        "status": "incomplete"
+      },
+      {
+        "atMs": 12000,
+        "status": "pending_user_transfer_start",
+        "message": "SIMULATED: send the withdrawal payment to the anchor account shown."
+      },
+      {
+        "atMs": 40000,
+        "status": "pending_user_transfer_complete"
+      },
+      {
+        "atMs": 70000,
+        "status": "pending_anchor"
+      },
+      {
+        "atMs": 100000,
+        "status": "pending_stellar"
+      },
+      {
+        "atMs": 130000,
+        "status": "pending_external",
+        "message": "SIMULATED BANK: transfer submitted, not yet confirmed."
+      },
+      {
+        "atMs": 160000,
+        "status": "completed",
+        "message": "SIMULATED BANK: payout confirmed."
+      }
+    ],
+    "jitterMs": 0
+  },
+  "requestIntervalMs": 5000,
+  "faults": [
+    {
+      "type": "transient_error",
+      "status": 503,
+      "retryAfterSeconds": 2,
+      "onPolls": [
+        5,
+        6,
+        7
+      ]
+    }
+  ],
+  "maxPolls": 80
+}
