@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "1",
+  "name": "delayed-payout",
+  "title": "Bank payout takes hours",
+  "description": "The anchor submits the payout and then takes hours to confirm. The client's polling budget ends first. The honest outcome is pending or unknown, never completed and never failed.",
+  "anchor": {
+    "assetCode": "USDC",
+    "amountIn": "100",
+    "fee": "1",
+    "timeline": [
+      {
+        "atMs": 0,
+        "status": "incomplete"
+      },
+      {
+        "atMs": 12000,
+        "status": "pending_user_transfer_start"
+      },
+      {
+        "atMs": 40000,
+        "status": "pending_user_transfer_complete"
+      },
+      {
+        "atMs": 70000,
+        "status": "pending_anchor"
+      },
+      {
+        "atMs": 100000,
+        "status": "pending_stellar"
+      },
+      {
+        "atMs": 130000,
+        "status": "pending_external",
+        "message": "SIMULATED BANK: transfer submitted, confirmation takes hours."
+      },
+      {
+        "atMs": 14400000,
+        "status": "completed"
+      }
+    ],
+    "jitterMs": 0
+  },
+  "requestIntervalMs": 5000,
+  "faults": [],
+  "maxPolls": 60
+}
