@@ -1,0 +1,37 @@
+{
+  "name": "@anasabubakar/raillab-engine",
+  "version": "0.1.0",
+  "description": "Deterministic SEP-24 consumer incident simulator: scenario server, virtual clock, fault scheduler, assertions and reference clients.",
+  "license": "MIT",
+  "author": "Anas Abubakar",
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "packageManager": "pnpm@11.25.0",
+  "bin": { "raillab": "./dist/node/cli.js" },
+  "main": "./dist/engine/index.js",
+  "types": "./dist/engine/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/engine/index.d.ts", "default": "./dist/engine/index.js" },
+    "./node": { "types": "./dist/node/index.d.ts", "default": "./dist/node/index.js" },
+    "./schema/scenario.v1.schema.json": "./schema/scenario.v1.schema.json",
+    "./schema/session.v1.schema.json": "./schema/session.v1.schema.json"
+  },
+  "files": ["dist", "schema", "scenarios", "README.md", "LICENSE"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && node scripts/postbuild.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest run",
+    "schema": "node --experimental-strip-types scripts/gen-schema.ts",
+    "check:schema": "node --experimental-strip-types scripts/gen-schema.ts --check",
+    "pack:artifact": "pnpm run build && pnpm pack --pack-destination artifacts"
+  },
+  "dependencies": {
+    "commander": "15.0.0",
+    "zod": "4.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "26.6.4",
+    "typescript": "7.0.2",
+    "vitest": "5.0.3"
+  }
+}
