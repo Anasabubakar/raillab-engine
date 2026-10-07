@@ -1,0 +1,30 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm run typecheck
+      - run: pnpm run check:schema
+      - run: pnpm test
+      - run: pnpm run build
+      - name: CLI exit codes
+        run: |
+          node dist/node/cli.js run baseline-withdrawal --consumer corrected
+          set +e
+          node dist/node/cli.js run baseline-withdrawal --consumer defective >/dev/null
+          test $? -eq 1
