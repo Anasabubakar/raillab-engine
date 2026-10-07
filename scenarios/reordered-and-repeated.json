@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "1",
+  "name": "reordered-and-repeated",
+  "title": "Reordered and repeated status responses",
+  "description": "Two responses arrive carrying an older status after a newer one was served, and one response is an exact repeat of the previous. A client must not move backwards or repeat a side effect.",
+  "anchor": {
+    "assetCode": "USDC",
+    "amountIn": "100",
+    "fee": "1",
+    "timeline": [
+      {
+        "atMs": 0,
+        "status": "incomplete"
+      },
+      {
+        "atMs": 12000,
+        "status": "pending_user_transfer_start",
+        "message": "SIMULATED: send the withdrawal payment to the anchor account shown."
+      },
+      {
+        "atMs": 40000,
+        "status": "pending_user_transfer_complete"
+      },
+      {
+        "atMs": 70000,
+        "status": "pending_anchor"
+      },
+      {
+        "atMs": 100000,
+        "status": "pending_stellar"
+      },
+      {
+        "atMs": 130000,
+        "status": "pending_external",
+        "message": "SIMULATED BANK: transfer submitted, not yet confirmed."
+      },
+      {
+        "atMs": 160000,
+        "status": "completed",
+        "message": "SIMULATED BANK: payout confirmed."
+      }
+    ],
+    "jitterMs": 0
+  },
+  "requestIntervalMs": 5000,
+  "faults": [
+    {
+      "type": "stale_snapshot",
+      "serveAsOfMs": 12000,
+      "onPolls": [
+        8
+      ]
+    },
+    {
+      "type": "duplicate_response",
+      "onPolls": [
+        13
+      ]
+    },
+    {
+      "type": "stale_snapshot",
+      "serveAsOfMs": 45000,
+      "onPolls": [
+        16
+      ]
+    }
+  ],
+  "maxPolls": 80
+}
