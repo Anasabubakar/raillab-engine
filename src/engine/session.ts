@@ -6,7 +6,7 @@ import { engineTransport, RequestBudgetExceeded, type Consumer } from "./transpo
 
 export const SESSION_VERSION = "1" as const;
 export const TOOL_NAME = "raillab-engine";
-export const TOOL_VERSION = "0.1.0";
+export const TOOL_VERSION = "0.1.1";
 
 export interface Session {
   sessionVersion: typeof SESSION_VERSION;
