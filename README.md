@@ -67,4 +67,4 @@ Supported: Node 22+ (developed on 24.19), TypeScript 7.0.2, zod 4.6.5.
 
 ## Status
 
-Engineering complete for the declared version-one scope. Not done: GitHub publishing and CI run, npm publish, a tagged release. No wallet or anchor maintainer has reviewed the scenarios or the rules. MIT licensed.
+Engineering complete for the declared version-one scope. Published on GitHub (CI green) and npm. No wallet or anchor maintainer has reviewed the scenarios or the rules. MIT licensed.
