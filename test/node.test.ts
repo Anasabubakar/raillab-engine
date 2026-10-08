@@ -140,6 +140,25 @@ describe("an external consumer in another language/runtime", () => {
   });
 });
 
+describe("external runner process-tree cleanup", () => {
+  const node = process.execPath;
+  it("a timeout kills the consumer's descendants and returns promptly", async () => {
+    const t0 = Date.now();
+    const r = await runExternal({ scenario: load("baseline-withdrawal"), seed: 1, command: [node, "test/fixtures/external-descendant-hang.mjs"], timeoutMs: 500 });
+    expect(r.timedOut).toBe(true);
+    expect(exitCodeFor(r.session)).toBe(4);
+    expect(Date.now() - t0).toBeLessThan(5000);
+  }, 15_000);
+
+  it("a consumer that exits but leaves a descendant holding the pipes does not hang the run", async () => {
+    const t0 = Date.now();
+    const r = await runExternal({ scenario: load("baseline-withdrawal"), seed: 1, command: [node, "test/fixtures/external-descendant-leak.mjs"], timeoutMs: 30_000 });
+    expect(r.exitCode).toBe(0);
+    expect(r.stdout).toMatch(/done/);
+    expect(Date.now() - t0).toBeLessThan(5000);
+  }, 15_000);
+});
+
 describe("CLI", () => {
   it("lists scenarios and rules, and labels each rule sep or policy", async () => {
     const c = cap();

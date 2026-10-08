@@ -57,7 +57,9 @@ export async function runExternal(opts: { scenario: Scenario; seed: number; comm
   let exitCode: number | null = null;
   try {
     exitCode = await new Promise<number | null>((resolve) => {
+      // detached puts the consumer in its own process group so the whole tree can be signalled, not just the child.
       const child = spawn(cmd, args, {
+        detached: true,
         env: {
           ...process.env,
           RAILLAB_BASE_URL: srv.url,
@@ -69,21 +71,42 @@ export async function runExternal(opts: { scenario: Scenario; seed: number; comm
         },
         stdio: ["ignore", "pipe", "pipe"],
       });
+      let settled = false;
+      const killTree = () => {
+        try {
+          if (child.pid !== undefined) process.kill(-child.pid, "SIGKILL");
+        } catch {
+          /* the group is already gone */
+        }
+      };
+      const finish = (code: number | null) => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        clearTimeout(grace);
+        killTree(); // descendants that outlived the consumer would otherwise keep our pipes open
+        child.stdout?.destroy();
+        child.stderr?.destroy();
+        resolve(code);
+      };
+      let grace: NodeJS.Timeout | undefined;
       const timer = setTimeout(() => {
         timedOut = true;
-        child.kill("SIGKILL");
+        killTree();
+        // Bounded cleanup: do not wait on pipes a surviving descendant might still hold.
+        grace = setTimeout(() => finish(null), 2000);
       }, opts.timeoutMs ?? 60_000);
       child.stdout.on("data", (d: Buffer) => (stdout = (stdout + d.toString()).slice(-20_000)));
       child.stderr.on("data", (d: Buffer) => (stderr = (stderr + d.toString()).slice(-20_000)));
       child.on("error", (e) => {
         stderr += String(e);
-        clearTimeout(timer);
-        resolve(null);
+        finish(null);
       });
-      child.on("close", (code) => {
-        clearTimeout(timer);
-        resolve(code);
+      // 'exit' fires when the child ends even if a descendant still holds its pipes; give output a moment to flush.
+      child.on("exit", (code) => {
+        grace = setTimeout(() => finish(code), 300);
       });
+      child.on("close", (code) => finish(code));
     });
   } finally {
     await srv.close();
