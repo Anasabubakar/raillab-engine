@@ -51,7 +51,7 @@ Your command gets `RAILLAB_BASE_URL` and `RAILLAB_EVENTS_URL`, talks plain HTTP 
 
 ## Library
 
-`@anasabubakar/raillab-engine` is browser-safe (no `node:` imports, enforced by a test): `ScenarioEngine`, `runSession`, `correctedConsumer`, `defectiveConsumer`, `MUTANTS`, assertions, `parseScenario`, `parseSession`. The `/node` export adds the HTTP server and the external-command runner. JSON Schemas for scenarios and sessions are in [`schema/`](schema). [raillab-workbench](https://github.com/Anasabubakar/raillab-workbench) runs this same engine and the same reference clients in the browser.
+`@anas.abubakar/raillab-engine` is browser-safe (no `node:` imports, enforced by a test): `ScenarioEngine`, `runSession`, `correctedConsumer`, `defectiveConsumer`, `MUTANTS`, assertions, `parseScenario`, `parseSession`. The `/node` export adds the HTTP server and the external-command runner. JSON Schemas for scenarios and sessions are in [`schema/`](schema). [raillab-workbench](https://github.com/Anasabubakar/raillab-workbench) runs this same engine and the same reference clients in the browser.
 
 ## Supported scope and limits
 

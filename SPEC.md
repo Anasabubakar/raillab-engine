@@ -35,7 +35,7 @@ Eight rules, each labelled **sep** or **policy** with its basis (see `raillab ru
 | retries-transient-errors | policy |
 
 ## Interfaces
-Library (`@anasabubakar/raillab-engine`, browser-safe): `ScenarioEngine`, `runSession`, `correctedConsumer`, `defectiveConsumer`, `MUTANTS`, assertions, schemas. Node (`/node`): HTTP server, external runner, CLI. CLI exit codes: 0 pass, 1 fail, 3 inconclusive, 4 consumer could not run or timed out, 2 invalid input.
+Library (`@anas.abubakar/raillab-engine`, browser-safe): `ScenarioEngine`, `runSession`, `correctedConsumer`, `defectiveConsumer`, `MUTANTS`, assertions, schemas. Node (`/node`): HTTP server, external runner, CLI. CLI exit codes: 0 pass, 1 fail, 3 inconclusive, 4 consumer could not run or timed out, 2 invalid input.
 
 ## Safety
 The server binds 127.0.0.1 only, limits bodies to 64 KiB, has a per-session request budget for runaway in-process consumers and a kill timeout for external ones. The control plane under `/__raillab` never advances time and validates every event.

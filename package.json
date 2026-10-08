@@ -1,5 +1,5 @@
 {
-  "name": "@anasabubakar/raillab-engine",
+  "name": "@anas.abubakar/raillab-engine",
   "version": "0.1.0",
   "description": "Deterministic SEP-24 consumer incident simulator: scenario server, virtual clock, fault scheduler, assertions and reference clients.",
   "license": "MIT",
