@@ -1,6 +1,11 @@
+<p align="center"><img src="docs/assets/banner.svg" alt="raillab-engine" width="100%"></p>
+
 # raillab-engine
 
-**Documentation:** https://stellar-developer-tools.gitbook.io/raillab-engine/
+[![CI](https://github.com/Rail-L-b/raillab-engine/actions/workflows/ci.yml/badge.svg)](https://github.com/Rail-L-b/raillab-engine/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE) [![Release](https://img.shields.io/github/v/release/Rail-L-b/raillab-engine)](https://github.com/Rail-L-b/raillab-engine/releases) [![npm](https://img.shields.io/npm/v/@anas.abubakar/raillab-engine)](https://www.npmjs.com/package/@anas.abubakar/raillab-engine)
+
+[Documentation](https://stellar-developer-tools.gitbook.io/raillab-engine/) · [App repository](https://github.com/Rail-L-b/raillab-workbench) · [Issues](https://github.com/Rail-L-b/raillab-engine/issues) · [Discussions](https://github.com/Rail-L-b/raillab-engine/discussions)
+
 
 Make the anchor fail in the lab before the wallet fails for a user.
 
@@ -11,7 +16,7 @@ The same scenario and seed always produce the identical timeline. The anchor, it
 ## See it fail, then pass
 
 ```bash
-git clone https://github.com/Anasabubakar/raillab-engine.git && cd raillab-engine
+git clone https://github.com/Rail-L-b/raillab-engine.git && cd raillab-engine
 pnpm install --frozen-lockfile && pnpm build
 
 node dist/node/cli.js run baseline-withdrawal --consumer defective     # exit 1
@@ -31,7 +36,7 @@ FAIL  [sep] Does not tell the user the withdrawal is complete before the anchor 
 node dist/node/cli.js test stale-authentication --seed 3 -- node my-wallet.js
 ```
 
-Your command gets `RAILLAB_BASE_URL` and `RAILLAB_EVENTS_URL`, talks plain HTTP and reports its decisions as JSON events. See [docs/CONSUMER-CONTRACT.md](https://github.com/Anasabubakar/raillab-engine/blob/main/docs/CONSUMER-CONTRACT.md). An independent 60-line plain-JavaScript client with no RailLab imports ([`test/fixtures/external-corrected.mjs`](https://github.com/Anasabubakar/raillab-engine/blob/main/test/fixtures/external-corrected.mjs)) passes five scenarios in the test suite; a naive one is caught.
+Your command gets `RAILLAB_BASE_URL` and `RAILLAB_EVENTS_URL`, talks plain HTTP and reports its decisions as JSON events. See [docs/CONSUMER-CONTRACT.md](https://github.com/Rail-L-b/raillab-engine/blob/main/docs/CONSUMER-CONTRACT.md). An independent 60-line plain-JavaScript client with no RailLab imports ([`test/fixtures/external-corrected.mjs`](https://github.com/Rail-L-b/raillab-engine/blob/main/test/fixtures/external-corrected.mjs)) passes five scenarios in the test suite; a naive one is caught.
 
 ## Scenarios
 
@@ -53,11 +58,11 @@ Your command gets `RAILLAB_BASE_URL` and `RAILLAB_EVENTS_URL`, talks plain HTTP 
 
 ## Library
 
-`@anas.abubakar/raillab-engine` is browser-safe (no `node:` imports, enforced by a test): `ScenarioEngine`, `runSession`, `correctedConsumer`, `defectiveConsumer`, `MUTANTS`, assertions, `parseScenario`, `parseSession`. The `/node` export adds the HTTP server and the external-command runner. JSON Schemas for scenarios and sessions are in [`schema/`](https://github.com/Anasabubakar/raillab-engine/blob/main/schema). [raillab-workbench](https://github.com/Anasabubakar/raillab-workbench) runs this same engine and the same reference clients in the browser.
+`@anas.abubakar/raillab-engine` is browser-safe (no `node:` imports, enforced by a test): `ScenarioEngine`, `runSession`, `correctedConsumer`, `defectiveConsumer`, `MUTANTS`, assertions, `parseScenario`, `parseSession`. The `/node` export adds the HTTP server and the external-command runner. JSON Schemas for scenarios and sessions are in [`schema/`](https://github.com/Rail-L-b/raillab-engine/blob/main/schema). [raillab-workbench](https://github.com/Rail-L-b/raillab-workbench) runs this same engine and the same reference clients in the browser.
 
 ## Supported scope and limits
 
-SEP-24 interactive withdrawal only (see [SPEC.md](https://github.com/Anasabubakar/raillab-engine/blob/main/SPEC.md)). `POST /auth` simulates the *outcome* of SEP-10 with an opaque token; it does not implement challenge signing. Not a conformance test for anchors. Faults model response behavior, not network-level conditions. Virtual time advances per request ([ADR 0002](https://github.com/Anasabubakar/raillab-engine/blob/main/docs/adr/0002-virtual-time-per-request.md)); a client is judged on request counts unless it reports its sleeps.
+SEP-24 interactive withdrawal only (see [SPEC.md](https://github.com/Rail-L-b/raillab-engine/blob/main/SPEC.md)). `POST /auth` simulates the *outcome* of SEP-10 with an opaque token; it does not implement challenge signing. Not a conformance test for anchors. Faults model response behavior, not network-level conditions. Virtual time advances per request ([ADR 0002](https://github.com/Rail-L-b/raillab-engine/blob/main/docs/adr/0002-virtual-time-per-request.md)); a client is judged on request counts unless it reports its sleeps.
 
 ## Verification
 
@@ -71,8 +76,43 @@ Supported: Node 22+ (developed on 24.19), TypeScript 7.0.2, zod 4.6.5.
 
 Engineering complete for the declared version-one scope. Published on GitHub (CI green) and npm. No wallet or anchor maintainer has reviewed the scenarios or the rules. MIT licensed.
 
+## Repository layout
+
+- `docs/`: decision records (ADRs), evidence and assets
+- `gitbook/`: source of the GitBook documentation
+- `scenarios/`: bundled scenarios
+- `schema/`: JSON Schemas, generated and checked in CI
+- `scripts/`: build, generation and recording scripts
+- `src/`: source
+- `test/`: tests
+
+## Documentation
+
+The full documentation is at https://stellar-developer-tools.gitbook.io/raillab-engine/. It is built from the `gitbook/` folder of this repository and synced from `main`, so a fix to a page is a pull request here.
+
+## Contributing
+
+Open issues are scoped so one person can finish one in a single cycle, and each lists acceptance criteria. Read [CONTRIBUTING.md](CONTRIBUTING.md), pick an issue from the [issue list](https://github.com/Rail-L-b/raillab-engine/issues), and say you are taking it before you start. Security reports go through [SECURITY.md](SECURITY.md), not public issues.
+
+## Maintainers
+
+| Maintainer | Role | GitHub |
+|---|---|---|
+| Anas Abubakar | Lead maintainer | [@Anasabubakar](https://github.com/Anasabubakar) |
+| Abdulbasit Fazazi | Co-maintainer | [@fazaziishola-coder](https://github.com/fazaziishola-coder) |
+
+## Community
+
+Questions and design discussion go in [GitHub Discussions](https://github.com/Rail-L-b/raillab-engine/discussions). Bugs and scoped work go in [Issues](https://github.com/Rail-L-b/raillab-engine/issues).
+
+## License
+
+MIT. See [LICENSE](LICENSE).
+
 ## Contributors
 
-<a href="https://github.com/Anasabubakar/raillab-engine/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=Anasabubakar/raillab-engine" alt="Contributors to raillab-engine" />
+Thanks to all the contributors who have made this project possible.
+
+<a href="https://github.com/Rail-L-b/raillab-engine/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=Rail-L-b/raillab-engine" alt="Contributors to raillab-engine" />
 </a>
