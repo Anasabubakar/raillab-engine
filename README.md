@@ -29,7 +29,7 @@ FAIL  [sep] Does not tell the user the withdrawal is complete before the anchor 
 node dist/node/cli.js test stale-authentication --seed 3 -- node my-wallet.js
 ```
 
-Your command gets `RAILLAB_BASE_URL` and `RAILLAB_EVENTS_URL`, talks plain HTTP and reports its decisions as JSON events. See [docs/CONSUMER-CONTRACT.md](docs/CONSUMER-CONTRACT.md). An independent 60-line plain-JavaScript client with no RailLab imports ([`test/fixtures/external-corrected.mjs`](test/fixtures/external-corrected.mjs)) passes five scenarios in the test suite; a naive one is caught.
+Your command gets `RAILLAB_BASE_URL` and `RAILLAB_EVENTS_URL`, talks plain HTTP and reports its decisions as JSON events. See [docs/CONSUMER-CONTRACT.md](https://github.com/Anasabubakar/raillab-engine/blob/main/docs/CONSUMER-CONTRACT.md). An independent 60-line plain-JavaScript client with no RailLab imports ([`test/fixtures/external-corrected.mjs`](https://github.com/Anasabubakar/raillab-engine/blob/main/test/fixtures/external-corrected.mjs)) passes five scenarios in the test suite; a naive one is caught.
 
 ## Scenarios
 
@@ -51,11 +51,11 @@ Your command gets `RAILLAB_BASE_URL` and `RAILLAB_EVENTS_URL`, talks plain HTTP 
 
 ## Library
 
-`@anas.abubakar/raillab-engine` is browser-safe (no `node:` imports, enforced by a test): `ScenarioEngine`, `runSession`, `correctedConsumer`, `defectiveConsumer`, `MUTANTS`, assertions, `parseScenario`, `parseSession`. The `/node` export adds the HTTP server and the external-command runner. JSON Schemas for scenarios and sessions are in [`schema/`](schema). [raillab-workbench](https://github.com/Anasabubakar/raillab-workbench) runs this same engine and the same reference clients in the browser.
+`@anas.abubakar/raillab-engine` is browser-safe (no `node:` imports, enforced by a test): `ScenarioEngine`, `runSession`, `correctedConsumer`, `defectiveConsumer`, `MUTANTS`, assertions, `parseScenario`, `parseSession`. The `/node` export adds the HTTP server and the external-command runner. JSON Schemas for scenarios and sessions are in [`schema/`](https://github.com/Anasabubakar/raillab-engine/blob/main/schema). [raillab-workbench](https://github.com/Anasabubakar/raillab-workbench) runs this same engine and the same reference clients in the browser.
 
 ## Supported scope and limits
 
-SEP-24 interactive withdrawal only (see [SPEC.md](SPEC.md)). `POST /auth` simulates the *outcome* of SEP-10 with an opaque token; it does not implement challenge signing. Not a conformance test for anchors. Faults model response behavior, not network-level conditions. Virtual time advances per request ([ADR 0002](docs/adr/0002-virtual-time-per-request.md)); a client is judged on request counts unless it reports its sleeps.
+SEP-24 interactive withdrawal only (see [SPEC.md](https://github.com/Anasabubakar/raillab-engine/blob/main/SPEC.md)). `POST /auth` simulates the *outcome* of SEP-10 with an opaque token; it does not implement challenge signing. Not a conformance test for anchors. Faults model response behavior, not network-level conditions. Virtual time advances per request ([ADR 0002](https://github.com/Anasabubakar/raillab-engine/blob/main/docs/adr/0002-virtual-time-per-request.md)); a client is judged on request counts unless it reports its sleeps.
 
 ## Verification
 
